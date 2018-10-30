@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import AddInput from "./AddInput";
+import Display from "./Display";
 
 class Content extends Component {
   constructor() {
@@ -18,7 +20,9 @@ class Content extends Component {
           done: true
         }
       ],
-      addInput: ""
+      searchTodos: [],
+      addInput: "",
+      inputSearch: ""
     };
   }
 
@@ -53,67 +57,47 @@ class Content extends Component {
   handleDelete = e => {
     if (window.confirm("Are you sure want to delete this item?")) {
       const filteredTodos = this.state.todos.filter((todo, index) => {
-        console.log(index);
         return JSON.stringify(index) !== e.target.id;
       });
-      console.log(filteredTodos);
+
       this.setState({ todos: filteredTodos });
     }
+  };
+
+  handleSearch = async e => {
+    console.log("works");
+    await this.handleChange(e);
+    let filteredSearch = this.state.todos.filter(
+      todo => todo.task.indexOf(this.state.inputSearch) !== -1
+    );
+
+    this.setState({
+      todos: filteredSearch
+    });
   };
 
   render() {
     return (
       <main className="container">
-        <div className="row">
-          <div className="col-3" />
-          <div className="input-group mb-3 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-            <input
-              type="text"
-              className="form-control"
-              id="addInput"
-              placeholder="Add new activity"
-              maxLength="30"
-              name="addInput"
-              value={this.state.addInput}
-              onChange={this.handleChange}
-              onKeyDown={this.handleEnter}
-            />
-
-            <div className="input-group-append">
-              <button
-                className="btn btn-outline-secondary"
-                id="addButton"
-                type="button"
-                onClick={this.handleSubmit}
-              >
-                Add
-              </button>
-            </div>
-          </div>
-          <div className="col-3" />
-        </div>
+        <AddInput
+          addInput={this.state.addInput}
+          handleChange={this.handleChange}
+          handleEnter={this.handleEnter}
+          handleSubmit={this.handleSubmit}
+        />
 
         <h2 style={{ textAlign: "center" }}>Todos</h2>
-        <div className="row">
-          <div className="col-3" />
-          <div className="col-6">
-            <ul className="list-group">
-              {this.state.todos.map((todo, index) => (
-                <div className="row mb-3" key={index}>
-                  <li className="col-10 list-group-item">{todo.task}</li>
-                  <button
-                    className="col-1 btn btn-danger"
-                    onClick={this.handleDelete}
-                    id={index}
-                  >
-                    X
-                  </button>
-                </div>
-              ))}
-            </ul>
-          </div>
-          <div className="col-3" />
-        </div>
+
+        <Display todos={this.state.todos} handleDelete={this.handleDelete} />
+
+        <input
+          type="text"
+          maxLength="20"
+          className="search form-control"
+          placeholder="Search . . ."
+          name="inputSearch"
+          onChange={this.handleSearch}
+        />
       </main>
     );
   }
