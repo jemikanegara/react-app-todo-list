@@ -16,8 +16,8 @@ const Header = props => {
           <div className="col-xl-3 col-lg-3 col-md-5 col-sm-12 mt-3">
             <input
               type="text"
-              maxlength="20"
-              class="search form-control"
+              maxLength="20"
+              className="search form-control"
               id="search"
               placeholder="Search . . ."
             />
