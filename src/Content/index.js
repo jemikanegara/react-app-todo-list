@@ -72,7 +72,7 @@ class Content extends Component {
     );
 
     this.setState({
-      todos: filteredSearch
+      searchTodos: filteredSearch
     });
   };
 
@@ -87,8 +87,15 @@ class Content extends Component {
         />
 
         <h2 style={{ textAlign: "center" }}>Todos</h2>
-
-        <Display todos={this.state.todos} handleDelete={this.handleDelete} />
+        {this.state.inputSearch === "" && (
+          <Display todos={this.state.todos} handleDelete={this.handleDelete} />
+        )}
+        {this.state.inputSearch !== "" && (
+          <Display
+            todos={this.state.searchTodos}
+            handleDelete={this.handleDelete}
+          />
+        )}
 
         <input
           type="text"
