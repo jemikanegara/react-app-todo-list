@@ -10,20 +10,24 @@ class App extends Component {
       todos: [
         {
           task: "eat",
-          done: false
+          done: false,
+          edit: false
         },
         {
           task: "work",
-          done: false
+          done: false,
+          edit: false
         },
         {
           task: "sleep",
-          done: true
+          done: true,
+          edit: false
         }
       ],
       searchTodos: [],
       addInput: "",
-      inputSearch: ""
+      inputSearch: "",
+      inputEdit: ""
     };
   }
 
@@ -75,11 +79,49 @@ class App extends Component {
     });
   };
 
-  handleEdit = (e, index) => {
-    let li = e.target.parentNode;
-    li.innerHTML = `<input type="text" value="${
-      li.children[0].textContent
-    }" />`;
+  handleEditMode = async (e, indexClick) => {
+    let editMode = this.state.todos.filter(
+      (todo, index) => indexClick === index
+    );
+
+    editMode[0].edit = true;
+
+    // let trueMode = this.state.todos.filter((todo, index) => todo.edit === true);
+
+    // let falseMode = this.state.todos.filter(
+    //   (todo, index) => indexClick !== index && todo.edit === false
+    // );
+
+    // let newMode = falseMode.concat(trueMode);
+
+    this.setState({ todos: this.state.todos });
+
+    // await this.setState({
+    //   : true,
+    //   editValue: e.target.value
+    // });
+    // let li = e.target.parentNode;
+    // li.innerHTML = `<input class="col-10 list-group-item" type="text" value="${
+    //   li.children[0].textContent
+    // }" />`;
+  };
+
+  handleCancelEdit = (e, indexClick) => {
+    let editMode = this.state.todos.filter(
+      (todo, index) => indexClick === index
+    );
+
+    editMode[0].edit = false;
+
+    // let trueMode = this.state.todos.filter(todo => todo.edit === true);
+
+    // let falseMode = this.state.todos.filter(
+    //   (todo, index) => todo.edit === false
+    // );
+
+    // let newMode = falseMode.concat(trueMode);
+
+    this.setState({ todos: this.state.todos });
   };
 
   render() {
@@ -98,7 +140,9 @@ class App extends Component {
           inputSearch={this.state.inputSearch}
           searchTodos={this.state.searchTodos}
           handleDelete={this.handleDelete}
-          handleEdit={this.handleEdit}
+          handleEditMode={this.handleEditMode}
+          handleCancelEdit={this.handleCancelEdit}
+          inputEdit={this.state.inputEdit}
           todos={this.state.todos}
         />
       </div>

@@ -25,7 +25,10 @@ class Content extends Component {
           <Display
             todos={this.props.todos}
             handleDelete={this.props.handleDelete}
-            handleEdit={this.props.handleEdit}
+            handleEditMode={this.props.handleEditMode}
+            handleCancelEdit={this.props.handleCancelEdit}
+            handleChange={this.props.handleChange}
+            inputEdit={this.props.inputEdit}
           />
         )}
       </main>
