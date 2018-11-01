@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import AddInput from "./AddInput";
-import Display from "./Display";
 
-class Content extends Component {
-  constructor() {
-    super();
+const Context = React.createContext();
+
+class Provider extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       todos: [
         {
@@ -65,47 +65,34 @@ class Content extends Component {
   };
 
   handleSearch = async e => {
+    console.log("works");
     await this.handleChange(e);
     let filteredSearch = this.state.todos.filter(
       todo => todo.task.indexOf(this.state.inputSearch) !== -1
     );
+
     this.setState({
-      searchTodos: filteredSearch
+      todos: filteredSearch
     });
   };
 
   render() {
     return (
-      <main className="container">
-        <AddInput
-          addInput={this.state.addInput}
-          handleChange={this.handleChange}
-          handleEnter={this.handleEnter}
-          handleSubmit={this.handleSubmit}
-        />
-
-        <h2 style={{ textAlign: "center" }}>Todos</h2>
-        {this.state.inputSearch !== "" && (
-          <Display
-            todos={this.state.searchTodos}
-            handleDelete={this.handleDelete}
-          />
-        )}
-        {this.state.inputSearch === "" && (
-          <Display todos={this.state.todos} handleDelete={this.handleDelete} />
-        )}
-
-        <input
-          type="text"
-          maxLength="20"
-          className="search form-control"
-          placeholder="Search . . ."
-          name="inputSearch"
-          onChange={this.handleSearch}
-        />
-      </main>
+      <Context.Provider
+        value={
+          (this.state,
+          this.handleChange,
+          this.handleSubmit,
+          this.handleEnter,
+          this.handleDelete,
+          this.handleSearch)
+        }
+      >
+        {this.props.children}
+      </Context.Provider>
     );
   }
 }
 
-export default Content;
+export default Provider;
+export const Consumer = Context.Consumer;
