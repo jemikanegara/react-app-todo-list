@@ -1,7 +1,7 @@
 import React from "react";
 
 const Header = props => {
-  const { title, desc } = props;
+  const { title, desc, handleSearch } = props;
   return (
     <nav className="navbar navbar-expand-sm navbar-dark mb-3 py-0 bg-fb">
       <div className="container">
@@ -18,8 +18,9 @@ const Header = props => {
               type="text"
               maxLength="20"
               className="search form-control"
-              id="search"
               placeholder="Search . . ."
+              name="inputSearch"
+              onChange={handleSearch}
             />
           </div>
         </div>
