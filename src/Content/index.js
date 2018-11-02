@@ -29,6 +29,7 @@ class Content extends Component {
             handleCancelEdit={this.props.handleCancelEdit}
             handleChange={this.props.handleChange}
             inputEdit={this.props.inputEdit}
+            handleSave={this.props.handleSave}
           />
         )}
       </main>

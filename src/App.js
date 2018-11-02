@@ -37,13 +37,14 @@ class App extends Component {
     });
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     if (this.state.addInput === "") {
       alert("input field cannot be empty");
     } else {
       let newTodo = this.state.todos.concat({
         task: this.state.addInput,
-        done: false
+        done: false,
+        edit: false
       });
 
       this.setState({
@@ -72,7 +73,10 @@ class App extends Component {
   handleSearch = async e => {
     await this.handleChange(e);
     let filteredSearch = this.state.todos.filter(
-      todo => todo.task.indexOf(this.state.inputSearch) !== -1
+      todo =>
+        todo.task
+          .toLocaleLowerCase()
+          .indexOf(this.state.inputSearch.toLowerCase()) !== -1
     );
     this.setState({
       searchTodos: filteredSearch
@@ -83,45 +87,27 @@ class App extends Component {
     let editMode = this.state.todos.filter(
       (todo, index) => indexClick === index
     );
-
     editMode[0].edit = true;
-
-    // let trueMode = this.state.todos.filter((todo, index) => todo.edit === true);
-
-    // let falseMode = this.state.todos.filter(
-    //   (todo, index) => indexClick !== index && todo.edit === false
-    // );
-
-    // let newMode = falseMode.concat(trueMode);
-
     this.setState({ todos: this.state.todos });
-
-    // await this.setState({
-    //   : true,
-    //   editValue: e.target.value
-    // });
-    // let li = e.target.parentNode;
-    // li.innerHTML = `<input class="col-10 list-group-item" type="text" value="${
-    //   li.children[0].textContent
-    // }" />`;
   };
 
   handleCancelEdit = (e, indexClick) => {
     let editMode = this.state.todos.filter(
       (todo, index) => indexClick === index
     );
-
     editMode[0].edit = false;
-
-    // let trueMode = this.state.todos.filter(todo => todo.edit === true);
-
-    // let falseMode = this.state.todos.filter(
-    //   (todo, index) => todo.edit === false
-    // );
-
-    // let newMode = falseMode.concat(trueMode);
-
     this.setState({ todos: this.state.todos });
+  };
+
+  handleSave = (e, indexClick) => {
+    if (e.keyCode === 13) {
+      let filterEdit = this.state.todos.filter(
+        (todo, index) => index === indexClick
+      );
+      filterEdit[0].task = this.state.inputEdit;
+      filterEdit[0].edit = false;
+      this.setState({ todos: this.state.todos, inputEdit: "" });
+    }
   };
 
   render() {
@@ -142,6 +128,7 @@ class App extends Component {
           handleDelete={this.handleDelete}
           handleEditMode={this.handleEditMode}
           handleCancelEdit={this.handleCancelEdit}
+          handleSave={this.handleSave}
           inputEdit={this.state.inputEdit}
           todos={this.state.todos}
         />

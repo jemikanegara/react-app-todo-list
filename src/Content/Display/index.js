@@ -7,7 +7,8 @@ const Display = props => {
     handleEditMode,
     handleCancelEdit,
     handleChange,
-    inputEdit
+    inputEdit,
+    handleSave
   } = props;
   return (
     <div className="row">
@@ -41,6 +42,7 @@ const Display = props => {
                     name="inputEdit"
                     value={inputEdit}
                     onChange={handleChange}
+                    onKeyUp={e => handleSave(e, index)}
                     placeholder={todo.task}
                   />
                   <button
